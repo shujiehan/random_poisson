@@ -2,20 +2,19 @@
 #include <cmath>
 #include <ctime>
 
-class Random {
+class RandomPoisson {
 private:
     long long _seed;
     double nextNextGaussian;
 
 public: 
-    Random();
-    Random(long long seed);
+    RandomPoisson();
+    RandomPoisson(long long seed);
     void setSeed(long long seed);
     long long getSeed();
     int next(int bits);
     int* nextBytes(int l[]);
-    int nextInt();
-    int nextInt(int n);
+    int nextInt(int n=-1);
     long long nextLong();
     bool nextBoolean();
     float nextFloat();

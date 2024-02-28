@@ -1,21 +1,21 @@
 #include <iostream>
-#include "random.hpp"
+#include "random_poisson.hpp"
 
-Random::Random() { _seed = static_cast<long long>(time(nullptr) * 1000);}
-Random::Random(long long seed) {
+RandomPoisson::RandomPoisson() { _seed = static_cast<long long>(time(nullptr) * 1000);}
+RandomPoisson::RandomPoisson(long long seed) {
         this->_seed = (seed ^ 0x5deece66dl) & ((1LL << 48) - 1);
         nextNextGaussian = -1;
     }
 
-    void Random::setSeed(long long seed) {
+    void RandomPoisson::setSeed(long long seed) {
         this->_seed = seed;
     }
 
-    long long Random::getSeed() {
+    long long RandomPoisson::getSeed() {
         return _seed;
     }
 
-    int Random::next(int bits) {
+    int RandomPoisson::next(int bits) {
         if (bits < 1)
             bits = 1;
         else if (bits > 32)
@@ -30,7 +30,7 @@ Random::Random(long long seed) {
         return retval;
     }
 
-    int* Random::nextBytes(int l[]) {
+    int* RandomPoisson::nextBytes(int l[]) {
         int n;
         for (int i = 0; i < sizeof(l)/sizeof(l[0]); ++i) {
             if (i % 4 == 0) {
@@ -44,14 +44,10 @@ Random::Random(long long seed) {
         }
         return l;
     }
-    int Random::nextInt() {
-        return next(32);
-    }
 
-    int Random::nextInt(int n) {
+    int RandomPoisson::nextInt(int n=-1) {
         if (n <= 0)
             return next(32);
-            throw "Argument must be positive!";
 
         if (!(n & (n - 1)))
             return (n * next(31)) >> 31;
@@ -65,23 +61,23 @@ Random::Random(long long seed) {
         return val;
     }
 
-    long long Random::nextLong() {
-        return (static_cast<long long>(Random::next(32)) << 32) + next(32);
+    long long RandomPoisson::nextLong() {
+        return (static_cast<long long>(RandomPoisson::next(32)) << 32) + next(32);
     }
 
-    bool Random::nextBoolean() {
-        return Random::next(1);
+    bool RandomPoisson::nextBoolean() {
+        return RandomPoisson::next(1);
     }
 
-    float Random::nextFloat() {
+    float RandomPoisson::nextFloat() {
         return next(24) / static_cast<float>(1 << 24);
     }
 
-    double Random::nextDouble() {
+    double RandomPoisson::nextDouble() {
         return ((static_cast<long long>(next(26)) << 27) + next(27)) / static_cast<double>(1L << 53);
     }
 
-    double Random::nextGaussian() {
+    double RandomPoisson::nextGaussian() {
         if (nextNextGaussian != -1) {
             double temp = nextNextGaussian;
             nextNextGaussian = -1;
@@ -98,7 +94,7 @@ Random::Random(long long seed) {
         return v1 * multiplier;
     }
 
-    int Random::poisson(double lambda) {
+    int RandomPoisson::poisson(double lambda) {
         if (lambda < 100.0) {
           double product = 1.0;
           double sum = 1.0;
