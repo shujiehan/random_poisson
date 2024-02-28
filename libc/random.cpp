@@ -1,6 +1,5 @@
 #include <iostream>
 #include "random.hpp"
-using namespace std;
 
 Random::Random() { _seed = static_cast<long long>(time(nullptr) * 1000);}
 Random::Random(long long seed) {
@@ -51,6 +50,7 @@ Random::Random(long long seed) {
 
     int Random::nextInt(int n) {
         if (n <= 0)
+            return next(32);
             throw "Argument must be positive!";
 
         if (!(n & (n - 1)))
@@ -102,10 +102,9 @@ Random::Random(long long seed) {
         if (lambda < 100.0) {
           double product = 1.0;
           double sum = 1.0;
-          double threshold = nextDouble() * exp(lambda);
-          //cout << "threshold = " << threshold << endl;
+          double threshold = nextDouble() * std::exp(lambda);
           int i = 1;
-          int max_ = max(100, 10 * (int) ceil(lambda));
+          int max_ = std::max(100, 10 * (int) std::ceil(lambda));
           while ((i < max_) && (sum <= threshold)) {
               product *= (lambda / i);
               sum += product;
@@ -113,10 +112,10 @@ Random::Random(long long seed) {
           }
           return i - 1;
         }
-        double x = lambda + sqrt(lambda) * nextGaussian();
+        double x = lambda + std::sqrt(lambda) * nextGaussian();
         if (x < 0.0) {
             return 0;
         }
-        return (int) floor(x);
+        return (int) std::floor(x);
 
     }

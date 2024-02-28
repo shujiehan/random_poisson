@@ -1,29 +1,15 @@
-#include <iostream>
-#include <cstdlib>
-#include <iomanip>
-#include <cmath>
-#include <chrono>
-#include "libc/random.hpp"
-using namespace std;
-using namespace std::chrono;
+#include <pybind11/pybind11.h>
 
-int main(int argc, char **argv){
+namespace py = pybind11;
 
-  int seed = 1;
-  Random r(seed);
-  int k = 0;
-  int sum = 0;
-  auto start = high_resolution_clock::now();
-  for (int i = 0; i < 100000; i++) {
-      k = r.poisson(1.0);
-      sum += k;
-      //cout << "iter = " <<  i << ", k = " << k << '\n';
-  }
-  auto stop = high_resolution_clock::now();
-  auto duration = duration_cast<microseconds>(stop - start);
-  cout << "Time taken by function: "
-       << duration.count() << " microseconds" << endl;
-  cout << sum << '\n';
-
-  return 1;
+PYBIND11_MODULE(random_poisson, m) {
+    m.doc() = "random poisson by pybind11"; // optional module docstring
+    py::class_<Random>(m, "Random")
+        .def(py::init<>())
+        .def(py::init<long long>())
+        .def_property("seed", &Random::setSeed, &Random::getSeed)
+        .def("next", &Random::next)
+        .def("nextBytes", &Random::nextBytes)
+        .def("nextInt", &Random::nextInt)
+        .def("nextBytes", &Random::nextBytes);
 }
