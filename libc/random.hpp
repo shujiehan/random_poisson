@@ -21,4 +21,5 @@ public:
     float nextFloat();
     double nextDouble();
     double nextGaussian();
+    int poisson(double lambda);
 };

@@ -97,3 +97,26 @@ Random::Random(long long seed) {
         nextNextGaussian = v2 * multiplier;
         return v1 * multiplier;
     }
+
+    int Random::poisson(double lambda) {
+        if (lambda < 100.0) {
+          double product = 1.0;
+          double sum = 1.0;
+          double threshold = nextDouble() * exp(lambda);
+          //cout << "threshold = " << threshold << endl;
+          int i = 1;
+          int max_ = max(100, 10 * (int) ceil(lambda));
+          while ((i < max_) && (sum <= threshold)) {
+              product *= (lambda / i);
+              sum += product;
+              i++;
+          }
+          return i - 1;
+        }
+        double x = lambda + sqrt(lambda) * nextGaussian();
+        if (x < 0.0) {
+            return 0;
+        }
+        return (int) floor(x);
+
+    }
