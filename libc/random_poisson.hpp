@@ -126,7 +126,7 @@ class RandomPoisson {
     }
 
     std::vector<int> multiplePoisson(double lambda, int n) {
-        std::vector<int> retVal(n); 
+        std::vector<int> retVal(0); 
         for (int i = 0; i < n; i++) {
             retVal.push_back(poisson(lambda));
         }
