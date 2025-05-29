@@ -12,6 +12,20 @@ This library is used for [ScaleDFP](https://github.com/shujiehan/ScaleDFP) to ac
 
 - Go to this repo directory `random_possion/`.
 
-- Run `python setup.py install` or `pip install .` to install random_poisson.
+- Compile
+  
+  - `mkdir build`
+  
+  - `cd build`
+  
+  - `cmake ..`
+  
+  - `make -j 4`
+
+- Install
+  
+  - Go back to `random_possion/` by `cd ..`
+  
+  - `python setup.py install` or `pip install .` to install random_poisson.
 
 - You can use this library as other popular python libraries by `import random_poisson`.
