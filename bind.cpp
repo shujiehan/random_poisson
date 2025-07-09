@@ -30,5 +30,20 @@ PYBIND11_MODULE(random_poisson, m) {
         .def("nextDouble", &RandomPoisson::nextDouble)
         .def("nextGaussian", &RandomPoisson::nextGaussian)
         .def("multiplePoisson", &RandomPoisson::multiplePoisson)
-        .def("poisson", &RandomPoisson::poisson);
+        .def("poisson", &RandomPoisson::poisson)
+        .def(py::pickle(
+            [](RandomPoisson &p) { // __get_state__
+                return py::make_tuple(p.getSeed(), p.getNextGaussian());
+            },
+            [](py::tuple t) { // __set_state__
+                if (t.size() != 2) {
+                    throw std::runtime_error("Invalid state in random poisson.");
+                }
+                RandomPoisson p;
+                // Directly restore the internal state
+                p.setSeed(t[0].cast<long long>()); 
+                p.setNextGaussian(t[1].cast<double>());
+                return p;
+            }
+        ));
 }

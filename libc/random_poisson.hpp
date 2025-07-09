@@ -10,17 +10,27 @@ class RandomPoisson {
 
   public:
     //RandomPoisson() { _seed = static_cast<long long>(time(nullptr) * 1000);}
+    RandomPoisson() { _seed = 0; nextNextGaussian = -1; }
+
     RandomPoisson(int seed) {
         this->_seed = (seed ^ 0x5deece66dl) & ((1LL << 48) - 1);
         nextNextGaussian = -1;
     }
 
-    void setSeed(int seed) {
+    void setSeed(long long seed) {
         this->_seed = seed;
     }
 
-    int getSeed() {
+    long long getSeed() {
         return _seed;
+    }
+
+    double getNextGaussian(){
+        return nextNextGaussian;
+    }
+
+    void setNextGaussian(double nextGaussian) {
+        nextNextGaussian = nextGaussian;
     }
 
 
